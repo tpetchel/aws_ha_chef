@@ -1,28 +1,35 @@
 #
-# Cookbook Name:: tiered-chef-server
+# Cookbook Name:: aws_ha_chef
 # Default attributes file
 #
 # Copyright 2014, Chef
 #
-# All rights reserved - Do Not Redistribute
-#
 
-default['chef-server']['api_fqdn'] = 'chef.example.com'
-default['chef-server']['backend']['fqdn'] = 'backend.chef-demo.com'
-default['chef-server']['backend']['ipaddress'] = '192.168.155.10'
+# URLs to download the Chef 12 core and HA packages
+node['aws_ha_chef']['urls']['core'] = 'https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-core-12.0.1-1.x86_64.rpm'
+node['aws_ha_chef']['urls']['ha'] = 'https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-ha-1.0.0-1.x86_64.rpm'
 
-# The frontends are a hash. If you don't declare it somewhere, the hostsfile
-# and backend recipes will fallback to the default demo settings.  This is
-# so we can avoid a hash merge when this is used with chef solo.
-default['chef-server']['frontends'] = {}
+# FQDN of your Amazon elastic load balancer
+node['aws_ha_chef']['api_fqdn']                          = ''
 
-default['chef-server']['urls']['manage'] = 'http://dxev6telsiawn.cloudfront.net/private-chef/opscode-manage_1.3.1-1_amd64.deb'
-default['chef-server']['urls']['push_jobs'] = 'http://dxev6telsiawn.cloudfront.net/private-chef/opscode-push-jobs-server_1.1.1-1_amd64.deb'
-default['chef-server']['urls']['reporting'] = 'http://dxev6telsiawn.cloudfront.net/private-chef/opscode-reporting_1.1.1-1_amd64.deb'
-default['chef-server']['urls']['private_chef'] = 'http://dxev6telsiawn.cloudfront.net/private-chef/private-chef_11.1.4-1_amd64.deb'
+node['aws_ha_chef']['ebs_vol_id']                        = ''
+node['aws_ha_chef']['ebs_device']                        = ''
 
-# Are we behind a Netscaler or F5?
-default['chef-server']['load_balancer'] = false
+node['aws_ha_chef']['backend1']['fqdn']                  = '' 
+node['aws_ha_chef']['backend1']['ip_address']            = '' 
+node['aws_ha_chef']['backend2']['fqdn']                  = '' 
+node['aws_ha_chef']['backend2']['ip_address']            = '' 
+
+node['aws_ha_chef']['frontends']['fe1']['fqdn']          = ''
+node['aws_ha_chef']['frontends']['fe1']['ip_address']    = ''
+node['aws_ha_chef']['frontends']['fe2']['fqdn']          = ''
+node['aws_ha_chef']['frontends']['fe2']['ip_address']    = ''
+
+# Want more frontends? Add as many as you need here:
+# node['aws_ha_chef']['frontends']['fe3']['fqdn'] = ''
+# node['aws_ha_chef']['frontends']['fe3']['ip_address'] = ''
+# node['aws_ha_chef']['frontends']['fe4']['fqdn'] = ''
+# node['aws_ha_chef']['frontends']['fe4']['ip_address'] = ''
 
 # Authorized keys file for syncing configs from backend to frontends
-default['chef-server']['authorized_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjnDoDewF6tt6zKruKxgi7jN5siOk6WbpQ/Xu+gjoiWgRuWz3QkYx5was72M3UVYEun5O+R0r1fsShd/gzsna/InncUleCLitNg92OdAEA9cX1T7Xz1X8BrRJn/l61ElSftv4mUVx9+Y5GpsQ5vOXUdHVWOgFQjNwKpo/o0jfXEotZ/d6L8/6lb4LhCUJ1H0v98ODHaSl8YHvOBpNW9eKomba1rYAr1+eqY1d/JbnduH476TObiskDmmIfVxYnGSNVSEigve4H7zqSEHQoOti4hMzJFgx5MOBoMndjdvdTFNXMHGYkyHE6E6Xm21yBJeNXyf7bWQphw9awi4qZCEof root@backend'
+default['aws_ha_chef']['authorized_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjnDoDewF6tt6zKruKxgi7jN5siOk6WbpQ/Xu+gjoiWgRuWz3QkYx5was72M3UVYEun5O+R0r1fsShd/gzsna/InncUleCLitNg92OdAEA9cX1T7Xz1X8BrRJn/l61ElSftv4mUVx9+Y5GpsQ5vOXUdHVWOgFQjNwKpo/o0jfXEotZ/d6L8/6lb4LhCUJ1H0v98ODHaSl8YHvOBpNW9eKomba1rYAr1+eqY1d/JbnduH476TObiskDmmIfVxYnGSNVSEigve4H7zqSEHQoOti4hMzJFgx5MOBoMndjdvdTFNXMHGYkyHE6E6Xm21yBJeNXyf7bWQphw9awi4qZCEof root@backend'

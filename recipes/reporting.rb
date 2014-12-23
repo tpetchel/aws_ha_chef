@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: tiered-chef-server
+# Cookbook Name:: aws_ha_chef
 # Recipe:: reporting
 #
 # Copyright 2014, Chef
@@ -11,10 +11,10 @@
 
 # Use the 'server_file' helper to strip filename off the end of URLs.
 # This way you don't have to store URLs and filenames separately.
-filepath = "#{Chef::Config[:file_cache_path]}/#{server_file(node['chef-server']['urls']['reporting'])}"
+filepath = "#{Chef::Config[:file_cache_path]}/#{server_file(node['aws_ha_chef']['urls']['reporting'])}"
 
 remote_file filepath do
-  source node['chef-server']['urls']['reporting']
+  source node['aws_ha_chef']['urls']['reporting']
 end
 
 dpkg_package 'reporting' do

@@ -1,7 +1,0 @@
-DEPENDENCIES
-  tiered-chef-server
-    path: .
-    metadata: true
-
-GRAPH
-  tiered-chef-server (0.1.0)

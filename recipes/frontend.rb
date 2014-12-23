@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: tiered-chef-server
+# Cookbook Name:: aws_ha_chef
 # Recipe:: frontend
 #
 # Copyright 2014, Chef

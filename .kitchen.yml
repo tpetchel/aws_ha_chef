@@ -1,0 +1,49 @@
+---
+driver:
+  name: ec2
+  ssh_key: ~/.ec2/scarolan_chef.pem
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
+  region: us-west-2
+  availability_zone: us-west-2a
+  security_group_ids: ['sg-7dabec18']
+  image_id: ami-b6bdde86
+  flavor_id: m3.medium
+  require_chef_omnibus: true
+  tags:
+    Name: "Chef AWS HA"
+    created-by: "test-kitchen"
+    user: <%= ENV['USER'] %>
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: centos-6.5
+    attributes:
+      aws_ha_chef:
+
+suites:
+  - name: backend_primary
+    run_list:
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::ha]
+    driver_config:
+      availability_zone: us-west-2a
+      subnet_id: subnet-4d70cd28
+      security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
+      tags:
+        Name: "AWS HA Chef - Backend 1"
+        created-by: "test-kitchen"
+        user: <%= ENV['USER'] %>
+  - name: backend_secondary
+    run_list:
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::ha]
+    driver_config:
+      subnet_id: subnet-4d70cd28
+      availability_zone: us-west-2a
+      security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
+      tags:
+        Name: "AWS HA Chef - Backend 2"
+        created-by: "test-kitchen"
+        user: <%= ENV['USER'] %>

@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: tiered-chef-server
+# Cookbook Name:: aws_ha_chef
 # Recipe:: backend
 #
 # Copyright 2014, Chef
@@ -11,8 +11,8 @@
 # number of frontend hosts.
 
 # Fall back on the demo setup if the frontends are not set
-unless node['chef-server']['frontends'].size > 0
-  node.default['chef-server']['frontends'] = {
+unless node['aws_ha_chef']['frontends'].size > 0
+  node.default['aws_ha_chef']['frontends'] = {
     'frontend1.chef-demo.com' => '192.168.155.10',
     'frontend2.chef-demo.com' => '192.168.155.11'
   }
@@ -57,7 +57,7 @@ execute 'private-chef-ctl restart opscode-pushy-server'
 # directories. The assumption is that you are going to configure your
 # frontend servers the same way.
 
-node['chef-server']['frontends'].each do |_fqdn, ipaddress|
+node['aws_ha_chef']['frontends'].each do |_fqdn, ipaddress|
   # Sync the Chef server files to the front-end machine
   execute "scp -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -r /etc/opscode root@#{ipaddress}:/etc"
   # Sync the push_jobs config
@@ -76,7 +76,7 @@ node['chef-server']['frontends'].each do |_fqdn, ipaddress|
   execute "ssh -t -t -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no root@#{ipaddress} 'opscode-manage-ctl restart'"
 
   # IMPORTANT NOTE:
-  # It appears chef-server-ctl reconfigure always generates these configs,
+  # It appears aws_ha_chef-ctl reconfigure always generates these configs,
   # regardless of whether or not the server type is backend or frontend.
   # Therefore, the frontend recipe /etc/opscode clean when it is finished
   # running. Always build your front-end servers first and the backend one

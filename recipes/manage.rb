@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: tiered-chef-server
+# Cookbook Name:: aws_ha_chef
 # Recipe:: manage
 #
 # Copyright 2014, Chef
@@ -12,10 +12,10 @@
 
 # Use the 'server_file' helper to strip filename off the end of URLs.
 # This way you don't have to store URLs and filenames separately.
-filepath = "#{Chef::Config[:file_cache_path]}/#{server_file(node['chef-server']['urls']['manage'])}"
+filepath = "#{Chef::Config[:file_cache_path]}/#{server_file(node['aws_ha_chef']['urls']['manage'])}"
 
 remote_file filepath do
-  source node['chef-server']['urls']['manage']
+  source node['aws_ha_chef']['urls']['manage']
 end
 
 dpkg_package 'manage' do
@@ -28,5 +28,5 @@ execute 'private-chef-ctl reconfigure'
 
 # Reconfigure the webui manage console
 execute 'opscode-manage-ctl reconfigure' do
-  only_if "grep -A2 #{node['fqdn']} /etc/opscode/chef-server-running.json | grep role | grep frontend"
+  only_if "grep -A2 #{node['fqdn']} /etc/opscode/aws_ha_chef-running.json | grep role | grep frontend"
 end
