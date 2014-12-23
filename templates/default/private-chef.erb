@@ -1,0 +1,27 @@
+# This file was created by Chef - manual changes may be overwritten
+
+topology "tier"
+
+server "<%= node['chef-server']['backend']['fqdn'] %>",
+  :ipaddress => "<%= node['chef-server']['backend']['ipaddress'] %>",
+  :role => "backend",
+  :bootstrap => true
+
+backend_vip "<%= node['chef-server']['backend']['fqdn'] %>",
+  :ipaddress => "<%= node['chef-server']['backend']['ipaddress'] %>"
+
+<% node['chef-server']['frontends'].each do |fqdn, ipaddress| -%>
+server "<%= fqdn %>",
+  :ipaddress => "<%= ipaddress %>",
+  :role => "frontend"
+
+<% end -%>
+api_fqdn "<%= node['chef-server']['api_fqdn'] -%>"
+
+<% if node['chef-server']['load_balancer'] %>
+# Are we behind a load balancer?  If so, enable port 80 traffic to frontends
+nginx['enable_non_ssl'] = true
+<% end %>
+
+# Disable the old webUI so the new one can be enabled
+opscode_webui['enable'] = false

@@ -1,0 +1,3 @@
+rubocop:    rubocop $COOKBOOK
+foodcritic: foodcritic -t ~FC005 -f any $SANDBOX/$COOKBOOK
+chefspec:   rspec --color -f d

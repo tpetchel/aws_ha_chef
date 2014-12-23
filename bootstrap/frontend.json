@@ -1,0 +1,29 @@
+{
+  "run_list": [
+    "recipe[paypal-chef-server::hostsfile]",
+    "recipe[paypal-chef-server::configfile]",
+    "recipe[paypal-chef-server::server]",
+    "recipe[paypal-chef-server::manage]",
+    "recipe[paypal-chef-server::reporting]",
+    "recipe[paypal-chef-server::push_jobs]",
+    "recipe[paypal-chef-server::frontend]"
+  ],
+  "chef-server": {
+    "load_balancer": true,
+    "api_fqdn": "chef.example.com",
+    "backend": {
+      "fqdn": "backend.example.com",
+      "ipaddress": "192.168.155.10"
+    },
+    "frontends": {
+      "frontend1.example.com": "192.168.155.11",
+      "frontend2.example.com": "192.168.155.12"
+    },
+    "urls": {
+    "private_chef": "http://fileserver.example.com/private-chef_11.1.4-1_amd64.deb",
+    "manage": "http://fileserver.example.com/opscode-manage_1.3.1-1_amd64.deb",
+    "reporting": "http://fileserver.example.com/opscode-reporting_1.1.1-1_amd64.deb",
+    "push_jobs": "http://fileserver.example.com/opscode-push-jobs-server_1.1.1-1_amd64.deb"
+    }
+  }
+}
