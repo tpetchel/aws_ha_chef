@@ -10,19 +10,28 @@
 # Run this recipe on your primary back-end server, *before* you run the 
 # cluster recipe.  This recipe sets up all the config files for the cluster.
 
-log "The EBS volume ID is: #{node.run_state['ebs_volume_id']}"
+ruby_block 'log_ebs_volume_id' do
+  block do
+    Chef::Log.info("The EBS volume ID is: #{node.run_state['ebs_volume_id']}")
+  end
+end
 
 # Make sure we have installed the push jobs and reporting add-ons
 include_recipe 'aws_ha_chef::push_jobs'
 include_recipe 'aws_ha_chef::reporting'
 
-if node['aws_ha_chef']['ebs_volume_id'] == ''
-  # Use the ebs_volume recipe to auto-create the EBS volume
-  ebs_vol_id = node.run_state['ebs_volume_id']
-else
-  # Or if you prefer, configure it and attach it manually
-  # Just set the node attribute below to your vol-XXXXXXX id
-  ebs_vol_id = node['aws_ha_chef']['ebs_volume_id']
+ruby_block 'get_ebs_volume_id' do
+  block do
+    if node['aws_ha_chef']['ebs_volume_id'] == ''
+      # Use the ebs_volume recipe to auto-create the EBS volume
+      $ebs_vol_id = node.run_state['ebs_volume_id']
+      $ebs_vol_id = node['aws']['ebs_volume']['chef_ebs_volume']['volume_id']
+    else
+      # Or if you prefer, configure it and attach it manually
+      # Just set the node attribute below to your vol-XXXXXXX id
+      $ebs_vol_id = node['aws_ha_chef']['ebs_volume_id']
+    end
+  end
 end
 
 # Render the chef-server.rb config file
@@ -32,7 +41,9 @@ template '/etc/opscode/chef-server.rb' do
   owner 'root'
   group 'root'
   variables(
-    :ebs_volume_id => ebs_vol_id
+    lazy {
+      {:ebs_volume_id => $ebs_vol_id}
+    }
   )
   mode '0644'
 end

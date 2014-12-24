@@ -64,7 +64,7 @@ default['aws_ha_chef']['frontends']['fe3']['ip_address']  IP address of front en
 Usage
 -----
 
-Usage is fairly simple and straightforward.  First configure all the attributes listed above via a role, *.json file, or .kitchen.yml file. Look in the included .kitchen.yml file to see which order the recipes are in. Note also that you will need to use the hosts recipe for local testing if you don't have 'real' DNS for your test machines.  Also note that if you are installing the reporting or push_jobs addons, you must build and configure your frontend servers first, then configure the backend server last.  This is because the backend server generates certs and other config files that get pushed up to the frontend servers at the end of the backend.rb recipe. 
+Usage is fairly simple and straightforward.  First configure all the attributes listed above via a role, *.json file, or .kitchen.yml file. Look in the included .kitchen.yml file to see which order the recipes are in. Note also that you will need to use the hosts recipe for local testing if you don't have DNS for your test machines.  Use the add_ssh_key and cluster recipes to configure the HA cluster.  add_ssh_key goes on all machines, cluster should only be run from the primary back-end
 
 The NTP recipe is only required if you don't already have a way to configure NTP.
 

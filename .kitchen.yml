@@ -109,7 +109,8 @@ suites:
       - recipe[aws_ha_chef::push_jobs]
       - recipe[aws_ha_chef::ebs_volume]
       - recipe[aws_ha_chef::primary]
-      - recipe[aws_ha_chef::cluster]
+      #- recipe[aws_ha_chef::cluster]
+      #- recipe[aws_ha_chef::remove_ssh_key]
     driver_config:
       availability_zone: us-west-2a
       subnet_id: subnet-4d70cd28
