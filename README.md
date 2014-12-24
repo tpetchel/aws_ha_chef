@@ -8,6 +8,12 @@ should you be running the Chef client on your Chef server(s). Use it as a
 one-off setup tool for building new Chef server clusters, or for restoring
 after a failure.
 
+IMPORTANT: If you wish to use the cluster recipe to configure the entire 
+cluster, you must have passwordless ssh access from the primary back-end to
+all other hosts.  You can use the add\_ssh\_key recipe to enable the cluster 
+recipe which will clean up the temporary ssh key when it's done.  You can also
+use the remove\_ssh\_key recipe to purge it from your machines.
+
 Requirements
 ------------
 TODO:  Add requirements here.
