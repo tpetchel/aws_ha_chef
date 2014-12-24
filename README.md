@@ -88,6 +88,7 @@ Primary back end run list:
 - recipe[aws_ha_chef::add_ssh_key]
 - recipe[aws_ha_chef::reporting]
 - recipe[aws_ha_chef::push_jobs]
+
 # These next three only run on the primary
 - recipe[aws_ha_chef::ebs_volume]
 - recipe[aws_ha_chef::primary]
