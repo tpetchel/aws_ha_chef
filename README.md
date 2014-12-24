@@ -1,4 +1,4 @@
-aws\_ha\_chef Cookbook
+aws_ha_chef Cookbook
 ===========================
 This cookbook will install and configure a high-availability Chef server 
 cluster with two back end servers and and multiple front-end servers.
@@ -30,28 +30,28 @@ Attributes
 ----------
 
 ```
-default['aws\_ha\_chef']['api_fqdn']                 FQDN of your Amazon elastic load balancer
-default['aws\_ha\_chef']['ebs_volume_id']            EBS volume id.  Create and attach your own, or use the ebs_volume recipe to create one. 
-default['aws\_ha\_chef']['ebs_device']               Device ID of the ebs_device.  Default is /dev/xvdj
+default['aws_ha_chef']['api_fqdn']                 FQDN of your Amazon elastic load balancer
+default['aws_ha_chef']['ebs_volume_id']            EBS volume id.  Create and attach your own, or use the ebs_volume recipe to create one. 
+default['aws_ha_chef']['ebs_device']               Device ID of the ebs_device.  Default is /dev/xvdj
 
-default['aws\_ha\_chef']['backend_vip']['fqdn']      FQDN of the backend VIP.  Defaults to backend-vip
-default['aws\_ha\_chef']['backend_vip']['ip_address'] IP address of the backend VIP. 
+default['aws_ha_chef']['backend_vip']['fqdn']      FQDN of the backend VIP.  Defaults to backend-vip
+default['aws_ha_chef']['backend_vip']['ip_address'] IP address of the backend VIP. 
 
-default['aws\_ha\_chef']['backend1']['fqdn']         FQDN of the primary back end
-default['aws\_ha\_chef']['backend1']['ip_address']   IP address of the primary back end
-default['aws\_ha\_chef']['backend2']['fqdn']         FQDN of the secondary back end 
-default['aws\_ha\_chef']['backend2']['ip_address']   IP address of the secondary back end
+default['aws_ha_chef']['backend1']['fqdn']         FQDN of the primary back end
+default['aws_ha_chef']['backend1']['ip_address']   IP address of the primary back end
+default['aws_ha_chef']['backend2']['fqdn']         FQDN of the secondary back end 
+default['aws_ha_chef']['backend2']['ip_address']   IP address of the secondary back end
 
-default['aws\_ha\_chef']['frontends']['fe1']['fqdn']        FQDN of front end 1
-default['aws\_ha\_chef']['frontends']['fe1']['ip_address']  IP address of front end 1
-default['aws\_ha\_chef']['frontends']['fe2']['fqdn']        FQDN of front end 2
-default['aws\_ha\_chef']['frontends']['fe2']['ip_address']  IP address of front end 2
-default['aws\_ha\_chef']['frontends']['fe3']['fqdn']        FQDN of front end 3
-default['aws\_ha\_chef']['frontends']['fe3']['ip_address']  IP address of front end 3
+default['aws_ha_chef']['frontends']['fe1']['fqdn']        FQDN of front end 1
+default['aws_ha_chef']['frontends']['fe1']['ip_address']  IP address of front end 1
+default['aws_ha_chef']['frontends']['fe2']['fqdn']        FQDN of front end 2
+default['aws_ha_chef']['frontends']['fe2']['ip_address']  IP address of front end 2
+default['aws_ha_chef']['frontends']['fe3']['fqdn']        FQDN of front end 3
+default['aws_ha_chef']['frontends']['fe3']['ip_address']  IP address of front end 3
 
 # Want more frontends? Add as many as you need here:
-# default['aws\_ha\_chef']['frontends']['fe4']['fqdn']        FQDN of front end 4
-# default['aws\_ha\_chef']['frontends']['fe4']['ip_address']  IP address of front end 4
+# default['aws_ha_chef']['frontends']['fe4']['fqdn']        FQDN of front end 4
+# default['aws_ha_chef']['frontends']['fe4']['ip_address']  IP address of front end 4
 ```
 
 
@@ -63,32 +63,32 @@ Usage is fairly simple and straightforward.  First configure all the attributes 
 The NTP recipe is only required if you don't already have a way to configure NTP.
 
 A typical run list for a frontend server might look like this:
-      - recipe[aws\_ha\_chef::disable_iptables]
-      - recipe[aws\_ha\_chef::server]
-      - recipe[aws\_ha\_chef::hosts]
-      - recipe[aws\_ha\_chef::add_ssh_key]
-      - recipe[aws\_ha\_chef::reporting]
-      - recipe[aws\_ha\_chef::push_jobs]
-      - recipe[aws\_ha\_chef::manage]
+      - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
+      - recipe[aws_ha_chef::manage]
 
 Secondary back end run list:
-      - recipe[aws\_ha\_chef::disable_iptables]
-      - recipe[aws\_ha\_chef::server]
-      - recipe[aws\_ha\_chef::ha]
-      - recipe[aws\_ha\_chef::hosts]
-      - recipe[aws\_ha\_chef::add_ssh_key]
-      - recipe[aws\_ha\_chef::reporting]
-      - recipe[aws\_ha\_chef::push_jobs]
+      - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::ha]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
 
 Primary back end run list:
-      - recipe[aws\_ha\_chef::disable_iptables]
-      - recipe[aws\_ha\_chef::server]
-      - recipe[aws\_ha\_chef::ha]
-      - recipe[aws\_ha\_chef::hosts]
-      - recipe[aws\_ha\_chef::add_ssh_key]
-      - recipe[aws\_ha\_chef::reporting]
-      - recipe[aws\_ha\_chef::push_jobs]
+      - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::ha]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
       # These next three only run on the primary
-      - recipe[aws\_ha\_chef::ebs_volume]
-      - recipe[aws\_ha\_chef::primary]
-      - recipe[aws\_ha\_chef::cluster]
+      - recipe[aws_ha_chef::ebs_volume]
+      - recipe[aws_ha_chef::primary]
+      - recipe[aws_ha_chef::cluster]
