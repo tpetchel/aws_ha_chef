@@ -6,30 +6,50 @@
 #
 
 # URLs to download the Chef 12 core and HA packages
-node['aws_ha_chef']['urls']['core'] = 'https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-core-12.0.1-1.x86_64.rpm'
-node['aws_ha_chef']['urls']['ha'] = 'https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-ha-1.0.0-1.x86_64.rpm'
+default['aws_ha_chef']['urls']['core'] = 'https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-server-core-12.0.1-1.x86_64.rpm'
+default['aws_ha_chef']['urls']['ha'] = 'https://web-dl.packagecloud.io/chef/stable/packages/el/6/chef-ha-1.0.0-1.x86_64.rpm'
 
-# FQDN of your Amazon elastic load balancer
-node['aws_ha_chef']['api_fqdn']                          = ''
+# Credentials of your IAM user, for managing storage and floating IP
+# Best to store these in a secure place, and call from ENV variables
+# Or inject them in using test kitchen.
+default['aws_ha_chef']['aws_access_key_id']                 = ''
+default['aws_ha_chef']['aws_secret_access_key']             = ''
 
-node['aws_ha_chef']['ebs_vol_id']                        = ''
-node['aws_ha_chef']['ebs_device']                        = ''
+# FQDN of your Amazon Elastic Load Balancer
+# Hand-crafted artisinal load balancer
+default['aws_ha_chef']['api_fqdn']                          = 'aws-chef-ha-demo-1680455053.us-west-2.elb.amazonaws.com'
 
-node['aws_ha_chef']['backend1']['fqdn']                  = '' 
-node['aws_ha_chef']['backend1']['ip_address']            = '' 
-node['aws_ha_chef']['backend2']['fqdn']                  = '' 
-node['aws_ha_chef']['backend2']['ip_address']            = '' 
+# EBS storage device
+# If you manually created the EBS volume, put it's vol- id here
+# Otherwise you can use the ebs_volume recipe to auto-generate one.
+default['aws_ha_chef']['ebs_volume_id']                     = ''
+default['aws_ha_chef']['ebs_device']                        = '/dev/xvdj'
 
-node['aws_ha_chef']['frontends']['fe1']['fqdn']          = ''
-node['aws_ha_chef']['frontends']['fe1']['ip_address']    = ''
-node['aws_ha_chef']['frontends']['fe2']['fqdn']          = ''
-node['aws_ha_chef']['frontends']['fe2']['ip_address']    = ''
+# We are being quite prescriptive about what IP addresses and hostnames here.
+# You'll need to configure your VPC and subnet settings to match what's below
+# if you want to use these defaults.
 
-# Want more frontends? Add as many as you need here:
-# node['aws_ha_chef']['frontends']['fe3']['fqdn'] = ''
-# node['aws_ha_chef']['frontends']['fe3']['ip_address'] = ''
-# node['aws_ha_chef']['frontends']['fe4']['fqdn'] = ''
-# node['aws_ha_chef']['frontends']['fe4']['ip_address'] = ''
+# Backend servers.  Must be in same availability zone, for example: us-west-2b
+default['aws_ha_chef']['backend1']['fqdn']                  = 'backend1.example.local' 
+default['aws_ha_chef']['backend1']['ip_address']            = '172.25.10.98'
+default['aws_ha_chef']['backend2']['fqdn']                  = 'backend2.example.local'
+default['aws_ha_chef']['backend2']['ip_address']            = '172.25.10.99'
 
-# Authorized keys file for syncing configs from backend to frontends
-default['aws_ha_chef']['authorized_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjnDoDewF6tt6zKruKxgi7jN5siOk6WbpQ/Xu+gjoiWgRuWz3QkYx5was72M3UVYEun5O+R0r1fsShd/gzsna/InncUleCLitNg92OdAEA9cX1T7Xz1X8BrRJn/l61ElSftv4mUVx9+Y5GpsQ5vOXUdHVWOgFQjNwKpo/o0jfXEotZ/d6L8/6lb4LhCUJ1H0v98ODHaSl8YHvOBpNW9eKomba1rYAr1+eqY1d/JbnduH476TObiskDmmIfVxYnGSNVSEigve4H7zqSEHQoOti4hMzJFgx5MOBoMndjdvdTFNXMHGYkyHE6E6Xm21yBJeNXyf7bWQphw9awi4qZCEof root@backend'
+# Shared VIP address for the backend servers
+default['aws_ha_chef']['backend_vip']['fqdn']               = 'backend-vip.example.local'
+default['aws_ha_chef']['backend_vip']['ip_address']         = '172.25.10.200'
+
+# Put your frontends in different availability zones if you wish
+# The 172.25.10.0/24 subnet is in us-west-2a
+default['aws_ha_chef']['frontends']['fe1']['fqdn']          = 'frontend1.example.local'
+default['aws_ha_chef']['frontends']['fe1']['ip_address']    = '172.25.10.125'
+# The 172.25.20.0/24 subnet is in us-west-2b
+default['aws_ha_chef']['frontends']['fe2']['fqdn']          = 'frontend2.example.local'
+default['aws_ha_chef']['frontends']['fe2']['ip_address']    = '172.25.20.125'
+# The 172.25.30.0/24 subnet is in us-west-2b
+default['aws_ha_chef']['frontends']['fe3']['fqdn']          = 'frontend3.example.local'
+default['aws_ha_chef']['frontends']['fe3']['ip_address']    = '172.25.30.125'
+
+# Want more frontends? Add as many as you need:
+# default['aws_ha_chef']['frontends']['fe4']['fqdn']          = 'frontend4.example.local'
+# default['aws_ha_chef']['frontends']['fe4']['ip_address']    = '172.25.40.125'

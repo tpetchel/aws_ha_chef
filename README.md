@@ -30,23 +30,23 @@ Attributes
 ----------
 
 ```
-node['aws_ha_chef']['api_fqdn']                 FQDN of your Amazon elastic load balancer
+default['aws_ha_chef']['api_fqdn']                 FQDN of your Amazon elastic load balancer
 
-node['aws_ha_chef']['backend1']['fqdn']         FQDN of the primary back end
-node['aws_ha_chef']['backend1']['ip_address']   IP address of the primary back end
-node['aws_ha_chef']['backend2']['fqdn']         FQDN of the secondary back end 
-node['aws_ha_chef']['backend2']['ip_address']   IP address of the secondary back end
+default['aws_ha_chef']['backend1']['fqdn']         FQDN of the primary back end
+default['aws_ha_chef']['backend1']['ip_address']   IP address of the primary back end
+default['aws_ha_chef']['backend2']['fqdn']         FQDN of the secondary back end 
+default['aws_ha_chef']['backend2']['ip_address']   IP address of the secondary back end
 
-node['aws_ha_chef']['frontends']['fe1']['fqdn']        FQDN of front end 1
-node['aws_ha_chef']['frontends']['fe1']['ip_address']  IP address of front end 1
-node['aws_ha_chef']['frontends']['fe2']['fqdn']        FQDN of front end 2
-node['aws_ha_chef']['frontends']['fe2']['ip_address']  IP address of front end 2
+default['aws_ha_chef']['frontends']['fe1']['fqdn']        FQDN of front end 1
+default['aws_ha_chef']['frontends']['fe1']['ip_address']  IP address of front end 1
+default['aws_ha_chef']['frontends']['fe2']['fqdn']        FQDN of front end 2
+default['aws_ha_chef']['frontends']['fe2']['ip_address']  IP address of front end 2
 
 # Want more frontends? Add as many as you need here:
-# node['aws_ha_chef']['frontends']['fe3']['fqdn']        FQDN of front end 3
-# node['aws_ha_chef']['frontends']['fe3']['ip_address']  IP address of front end 3
-# node['aws_ha_chef']['frontends']['fe4']['fqdn']        FQDN of front end 4
-# node['aws_ha_chef']['frontends']['fe4']['ip_address']  IP address of front end 4
+# default['aws_ha_chef']['frontends']['fe3']['fqdn']        FQDN of front end 3
+# default['aws_ha_chef']['frontends']['fe3']['ip_address']  IP address of front end 3
+# default['aws_ha_chef']['frontends']['fe4']['fqdn']        FQDN of front end 4
+# default['aws_ha_chef']['frontends']['fe4']['ip_address']  IP address of front end 4
 ```
 
 
@@ -55,7 +55,7 @@ node['aws_ha_chef']['frontends']['fe2']['ip_address']  IP address of front end 2
 Usage
 -----
 
-Usage is fairly simple and straightforward.  First configure all the attributes listed above via a role, *.json file, or .kitchen.yml file. Look in the included .kitchen.yml file to see which order the recipes are in. Note also that you will need to use the 'hostsfile' recipe for local testing if you don't have 'real' DNS for your test machines.  Also note that if you are installing the reporting or push_jobs addons, you must build and configure your frontend servers first, then configure the backend server last.  This is because the backend server generates certs and other config files that get pushed up to the frontend servers at the end of the backend.rb recipe. 
+Usage is fairly simple and straightforward.  First configure all the attributes listed above via a role, *.json file, or .kitchen.yml file. Look in the included .kitchen.yml file to see which order the recipes are in. Note also that you will need to use the hosts recipe for local testing if you don't have 'real' DNS for your test machines.  Also note that if you are installing the reporting or push_jobs addons, you must build and configure your frontend servers first, then configure the backend server last.  This is because the backend server generates certs and other config files that get pushed up to the frontend servers at the end of the backend.rb recipe. 
 
 The NTP recipe is only required if you don't already have a way to configure NTP.
 

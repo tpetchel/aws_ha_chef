@@ -1,0 +1,29 @@
+# This file was created by Chef - manual changes may be overwritten
+topology 'ha'
+ha['provider'] = 'aws'
+ha['aws_access_key_id'] = '<%= node['aws_ha_chef']['aws_access_key_id'] -%>'
+ha['aws_secret_access_key'] = '<%= node['aws_ha_chef']['aws_secret_access_key'] -%>'
+ha['ebs_volume_id'] = '<%= @ebs_volume_id -%>'
+ha['ebs_device'] = '/dev/xvdj'
+
+server '<%= node['aws_ha_chef']['backend1']['fqdn'] -%>',
+  :ipaddress => '<%= node['aws_ha_chef']['backend1']['ip_address'] -%>',
+  :role => 'backend',
+  :bootstrap => true
+
+server '<%= node['aws_ha_chef']['backend2']['fqdn'] -%>',
+  :ipaddress => '<%= node['aws_ha_chef']['backend2']['ip_address'] -%>',
+  :role => 'backend'
+
+backend_vip '<%= node['aws_ha_chef']['backend_vip']['fqdn'] -%>',
+  :ipaddress => '<%= node['aws_ha_chef']['backend_vip']['ip_address'] -%>',
+  :device => 'eth0',
+  :heartbeat_device => 'eth0'
+
+<% node['aws_ha_chef']['frontends'].each do |_host, host_data| -%>
+server '<%= host_data['fqdn'] -%>',
+  :ipaddress => '<%= host_data['ip_address'] -%>',
+  :role => 'frontend'
+<% end -%>
+
+api_fqdn '<%= node['aws_ha_chef']['api_fqdn'] -%>'

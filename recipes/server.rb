@@ -2,12 +2,8 @@
 # Cookbook Name:: aws_ha_chef
 # Recipe:: server
 #
-# Copyright 2014, Chef
-#
-# All rights reserved - Do Not Redistribute
-#
-# This recipe only installs the Chef core server software, but does not configure it
-# It can be used on both front-end and back-end servers
+# This recipe only installs the Chef core server software, but does not configure it.
+# It can be used on both front-end and back-end servers.
 
 # Use the 'server_file' helper to strip filename off the end of URLs.
 # This way you don't have to store URLs and filenames separately.

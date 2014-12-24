@@ -1,11 +1,11 @@
 {
   "run_list": [
-    "recipe[paypal-chef-server::hostsfile]",
-    "recipe[paypal-chef-server::configfile]",
-    "recipe[paypal-chef-server::server]",
-    "recipe[paypal-chef-server::reporting]",
-    "recipe[paypal-chef-server::push_jobs]",
-    "recipe[paypal-chef-server::backend]"
+    "recipe[aws_ha_chef::hosts]",
+    "recipe[aws_ha_chef::configfile]",
+    "recipe[aws_ha_chef::server]",
+    "recipe[aws_ha_chef::reporting]",
+    "recipe[aws_ha_chef::push_jobs]",
+    "recipe[aws_ha_chef::backend]"
   ],
   "chef-server": {
     "load_balancer": true,

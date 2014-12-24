@@ -1,0 +1,10 @@
+# This file is managed by Chef.  Manual changes may be overwritten.
+127.0.0.1 localhost.localdomain localhost
+::1 localhost6.localdomain6 localhost6
+
+<% node['aws_ha_chef']['frontends'].each do |_host, host_data| -%>
+<%= "#{host_data['ip_address']}     #{host_data['fqdn']}     #{host_data['fqdn'].split('.')[0]}" %>
+<% end -%>
+<%= "#{node['aws_ha_chef']['backend1']['ip_address']}     #{node['aws_ha_chef']['backend1']['fqdn']}     #{node['aws_ha_chef']['backend1']['fqdn'].split('.')[0]}" %>
+<%= "#{node['aws_ha_chef']['backend2']['ip_address']}     #{node['aws_ha_chef']['backend2']['fqdn']}     #{node['aws_ha_chef']['backend2']['fqdn'].split('.')[0]}" %>
+<%= "#{node['aws_ha_chef']['backend_vip']['ip_address']}     #{node['aws_ha_chef']['backend_vip']['fqdn']}     #{node['aws_ha_chef']['backend_vip']['fqdn'].split('.')[0]}" %>

@@ -1,14 +1,14 @@
 ---
 driver:
   name: ec2
-  ssh_key: ~/.ec2/scarolan_chef.pem
+  ssh_key: <%= ENV['AWS_SSH_KEY_PATH'] %>
   aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
   region: us-west-2
   availability_zone: us-west-2a
   security_group_ids: ['sg-7dabec18']
   image_id: ami-b6bdde86
   flavor_id: m3.medium
-  require_chef_omnibus: true
+  require_chef_omnibus: 11.16.4
   tags:
     Name: "Chef AWS HA"
     created-by: "test-kitchen"
@@ -23,27 +23,99 @@ platforms:
       aws_ha_chef:
 
 suites:
-  - name: backend_primary
+  - name: frontend_1
     run_list:
+      - recipe[aws_ha_chef::disable_iptables]
       - recipe[aws_ha_chef::server]
-      - recipe[aws_ha_chef::ha]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
+      - recipe[aws_ha_chef::manage]
     driver_config:
-      availability_zone: us-west-2a
       subnet_id: subnet-4d70cd28
-      security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
+      flavor_id: m1.small
+      availability_zone: us-west-2a
+      security_group_ids: ['sg-7dabec18', 'sg-e9b7f08c']
+      private_ip_address: 172.25.10.125
       tags:
-        Name: "AWS HA Chef - Backend 1"
+        Name: "AWS HA Chef - Frontend 1"
+        created-by: "test-kitchen"
+        user: <%= ENV['USER'] %>
+  - name: frontend_2
+    run_list:
+      - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
+      - recipe[aws_ha_chef::manage]
+    driver_config:
+      subnet_id: subnet-45fd2e32
+      flavor_id: m1.small
+      availability_zone: us-west-2b
+      security_group_ids: ['sg-7dabec18', 'sg-e9b7f08c']
+      private_ip_address: 172.25.20.125
+      tags:
+        Name: "AWS HA Chef - Frontend 2"
+        created-by: "test-kitchen"
+        user: <%= ENV['USER'] %>
+  - name: frontend_3
+    run_list:
+      - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
+      - recipe[aws_ha_chef::manage]
+    driver_config:
+      subnet_id: subnet-1ae51543
+      flavor_id: m1.small
+      availability_zone: us-west-2c
+      security_group_ids: ['sg-7dabec18', 'sg-e9b7f08c']
+      private_ip_address: 172.25.30.125
+      tags:
+        Name: "AWS HA Chef - Frontend 3"
         created-by: "test-kitchen"
         user: <%= ENV['USER'] %>
   - name: backend_secondary
     run_list:
+      - recipe[aws_ha_chef::disable_iptables]
       - recipe[aws_ha_chef::server]
       - recipe[aws_ha_chef::ha]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
     driver_config:
       subnet_id: subnet-4d70cd28
       availability_zone: us-west-2a
       security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
+      private_ip_address: 172.25.10.99
       tags:
         Name: "AWS HA Chef - Backend 2"
+        created-by: "test-kitchen"
+        user: <%= ENV['USER'] %>
+  - name: backend_primary
+    run_list:
+      - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::server]
+      - recipe[aws_ha_chef::ha]
+      - recipe[aws_ha_chef::hosts]
+      - recipe[aws_ha_chef::add_ssh_key]
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::push_jobs]
+      - recipe[aws_ha_chef::ebs_volume]
+      - recipe[aws_ha_chef::primary]
+      - recipe[aws_ha_chef::cluster]
+    driver_config:
+      availability_zone: us-west-2a
+      subnet_id: subnet-4d70cd28
+      security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
+      private_ip_address: 172.25.10.98
+      tags:
+        Name: "AWS HA Chef - Backend 1"
         created-by: "test-kitchen"
         user: <%= ENV['USER'] %>
