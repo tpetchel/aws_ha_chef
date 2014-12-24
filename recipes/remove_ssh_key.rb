@@ -9,16 +9,16 @@
 
 # This recipe removes the temporary ssh key
 
-directory '/root/.ssh' do
-  action :create
-  owner 'root'
-  group 'root'
-  mode '0755'
+# Delete the temporary key file
+file '/root/.ssh/aws_chef_ha.pub' do
+  action :delete
+  backup false
 end
 
-# Delete the temporary key file
-cookbook_file '/root/.ssh/aws_chef_ha.pub' do
+# Delete the private key too, if it exists
+file '/root/.ssh/aws_chef_ha' do
   action :delete
+  backup false
 end
 
 # Remove the key from root's authorized_keys
