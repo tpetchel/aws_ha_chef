@@ -47,3 +47,20 @@ template '/etc/opscode/chef-server.rb' do
   )
   mode '0644'
 end
+
+# Create missing keepalived cluster status files
+file '/var/opt/opscode/keepalived/current_cluster_status' do
+  action :create
+  content 'master'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+file '/var/opt/opscode/keepalived/requested_cluster_status' do
+  action :create
+  content 'master'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end

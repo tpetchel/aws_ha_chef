@@ -5,20 +5,22 @@
 
 # Configures a secondary IP address on the primary back end server
 
-# Not sure if these are really needed
-#package 'gcc' do
-#  action :install
-#end.run_action(:install)
-#
-#package 'ruby-devel' do
-#  action :install
-#end.run_action(:install)
+# Required to build the cantakerous nokogiri gem
+package 'gcc' do
+  action :install
+end.run_action(:install)
 
+package 'ruby-devel' do
+  action :install
+end.run_action(:install)
+
+# Behold the Nokogiri and tremble
 chef_gem 'nokogiri' do
   version '1.6.1'
   action :install
 end
 
+# Ok, now that the yak is properly shaved, we can install fog
 chef_gem 'fog'
 require 'fog'
 
