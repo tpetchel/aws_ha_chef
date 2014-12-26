@@ -1,34 +1,44 @@
 aws_ha_chef Cookbook
 ===========================
-This cookbook will install and configure a high-availability Chef server 
-cluster with two back end servers and and multiple front-end servers.
+This cookbook will install and configure a high-availability Chef server cluster with two back end servers and and multiple front-end servers.
 
-NOTE: the recipes contained in this cookbook are NOT all idempotent, nor
-should you be running the Chef client on your Chef server(s). Use it as a
-one-off setup tool for building new Chef server clusters, or for restoring
-after a failure.
+NOTE: the recipes contained in this cookbook are NOT all idempotent, nor should you be running the Chef client on your Chef server(s). Use it as a one-off setup tool for building new Chef server clusters, or for restoring after a failure.
 
-IMPORTANT: If you wish to use the cluster recipe to configure the entire 
-cluster, you must have passwordless ssh access from the primary back-end to
-all other hosts.  You can use the add\_ssh\_key recipe to enable the cluster 
-recipe which will clean up the temporary ssh key when it's done.  You can also
-use the remove\_ssh\_key recipe to purge it from your machines.
+IMPORTANT: If you wish to use the cluster recipe to configure the entire cluster, you must have passwordless ssh access from the primary back-end to all other hosts. You can use the add\_ssh\_key recipe to enable the cluster recipe which will clean up the temporary ssh key when it's done. You can also use the remove\_ssh\_key recipe to purge it from your machines.
 
 Requirements
 ------------
-TODO:  Add requirements here.
+TODO: Add requirements here.
 
-+ VPC with subnets in desired availability zones
+These are example settings that will work with the default attributes in the cookbook. You can also create your own subnet and security group settings, as long as the necessary ports between the front end and back end servers are open. See this link for the ports that are required by the Chef server:
+
+https://docs.chef.io/server_firewalls_and_ports.html 
+
+Default settings - HA Chef cluster in us-west-2 (Oregon) region:
++ VPC: 
+  CHEF_HA_VPC  172.25.0.0/16
++ Subnets:  Each subnet is attached to an availability zone:
+  us-west-2a 172.25.10.0/24
+  us-west-2b 172.25.20.0/24
+  us-west-2c 172.25.30.0/24 
 + Security groups for load balancer, front end, back end and VPC default
-+ Internet gateway on Chef VPC network, so subnets can reach the internet
-+ EBS storage device, recommended size 100GB and provisioned 3000 IOPS
-+ IAM account with correct rights; see installation guide
+  - Default - allows only inbound port 22, and ICMP requests (for ping testing)
+  - CHEF_LB - allows ports 80 and 443 tcp.
+  - CHEF_VPC_Backend - Allows all traffic from front ends
+  - CHEF_VPC_Frontend - Allows 80 and 443 tcp from the load balancer security group
+
+  All four of these security groups allow unrestricted outbound access by default.
+
++ Internet gateway on Chef VPC network, so subnets can reach the internet.  Don't forget to attach this or your machines won't be able to reach the outside world.
++ EBS storage device, recommended size 100GB and provisioned 3000 IOPS.  You can either create this by hand or use the ebs_volume recipe to have Chef create it for you.  Just make sure that if you create it by hand, you specify the volume id in your node attributes.
++ IAM account with correct rights; see installation guide. You'll want to create a restricted account because its AWS keys are going to reside on the back-end servers in a config file that is owned by root. This user handles the VIP address and the storage device for the back-end servers.
++ Either an internal or external load balancer to expose the Chef API
 + Two back end instances, two or more front-end instances
   - Back end servers must both be in the same availability zone
   - Back end EBS storage must be in the same AZ as the back end servers
   - Front end servers can be in any availability zone in the same region
-  - You must create VPC subnets in any AZ where you want to put servers
-+ Either an internal or external load balancer to expose the Chef API
+  - You must create VPC subnets in any AZ where you want to put servers (see above)
+  - The default settings in this cookbook create a pair of m3.medium instances in us-west-2a for the back ends and one front end in each of us-west-2a, 2b, and 2c.
 + OPTIONAL: Routes and/or peering connections for any internal networks
 
 

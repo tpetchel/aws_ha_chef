@@ -100,6 +100,7 @@ suites:
         user: <%= ENV['USER'] %>
   - name: backend_primary
     run_list:
+      - recipe[aws_ha_chef::floating_ip]
       - recipe[aws_ha_chef::disable_iptables]
       - recipe[aws_ha_chef::server]
       - recipe[aws_ha_chef::ha]

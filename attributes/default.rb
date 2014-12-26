@@ -15,6 +15,9 @@ default['aws_ha_chef']['urls']['ha'] = 'https://web-dl.packagecloud.io/chef/stab
 default['aws_ha_chef']['aws_access_key_id']                 = ''
 default['aws_ha_chef']['aws_secret_access_key']             = ''
 
+# Used by the floating_ip recipe
+default['aws_ha_chef']['region']                            = 'us-west-2'
+
 # FQDN of your Amazon Elastic Load Balancer
 # Hand-crafted artisinal load balancer
 default['aws_ha_chef']['api_fqdn']                          = 'aws-chef-ha-demo-1680455053.us-west-2.elb.amazonaws.com'
