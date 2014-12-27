@@ -1,14 +1,18 @@
 #
 # Cookbook Name:: aws_ha_chef
-# Recipe:: primary
+# Recipe:: secondary
 #
 # Copyright 2014, Chef
 #
 # All rights reserved - Do Not Redistribute
 #
 
-# Run this recipe on your secondary back-end server, *before* you run the 
-# cluster recipe.  This recipe sets up all the config files for the cluster.
+include_recipe 'aws_ha_chef::hosts'
+include_recipe 'aws_ha_chef::disable_iptables'
+include_recipe 'aws_ha_chef::server'
+include_recipe 'aws_ha_chef::ha'
+include_recipe 'aws_ha_chef::push_jobs'
+include_recipe 'aws_ha_chef::reporting'
 
 # Create missing keepalived cluster status files
 directory '/var/opt/opscode/keepalived' do
@@ -34,5 +38,5 @@ file '/var/opt/opscode/keepalived/requested_cluster_status' do
   mode '0644'
 end
 
-# Prevent this machine from trying to usurp the true master
-execute 'chef-server-ctl stop keepalived'
+# Do the cluster configuration
+include_recipe "aws_ha_chef::cluster"

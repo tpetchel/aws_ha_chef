@@ -14,13 +14,13 @@ package 'ruby-devel' do
   action :install
 end.run_action(:install)
 
-# Behold the Nokogiri and tremble
+# Behold the Nokogiri and tremble in fear!
 chef_gem 'nokogiri' do
   version '1.6.1'
   action :install
 end
 
-# Ok, now that the yak is properly shaved, we can install fog
+# Now that the yak is properly shaved, we can install fog.
 chef_gem 'fog'
 require 'fog'
 
