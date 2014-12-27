@@ -8,6 +8,8 @@ driver:
   security_group_ids: ['sg-7dabec18']
   image_id: ami-b6bdde86
   flavor_id: m3.medium
+  ssh_timeout: 3
+  ssh_retries: 5
   require_chef_omnibus: 11.16.4
   tags:
     Name: "Chef AWS HA"
@@ -103,16 +105,18 @@ suites:
     run_list:
       - recipe[aws_ha_chef::floating_ip]
       - recipe[aws_ha_chef::disable_iptables]
+      - recipe[aws_ha_chef::configfile]
       - recipe[aws_ha_chef::server]
       - recipe[aws_ha_chef::ha]
       - recipe[aws_ha_chef::hosts]
       - recipe[aws_ha_chef::add_ssh_key]
-      - recipe[aws_ha_chef::reporting]
-      - recipe[aws_ha_chef::push_jobs]
       - recipe[aws_ha_chef::ebs_volume]
+      - recipe[aws_ha_chef::push_jobs]
       - recipe[aws_ha_chef::primary]
-      #- recipe[aws_ha_chef::cluster]
-      #- recipe[aws_ha_chef::remove_ssh_key]
+      # Reporting recipe *must* come after the primary recipe
+      - recipe[aws_ha_chef::reporting]
+      - recipe[aws_ha_chef::cluster]
+      - recipe[aws_ha_chef::remove_ssh_key]
     driver_config:
       availability_zone: us-west-2a
       subnet_id: subnet-4d70cd28

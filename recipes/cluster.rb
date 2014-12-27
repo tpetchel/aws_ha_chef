@@ -10,9 +10,47 @@
 # Run this recipe *last* on your primary back-end server.  It will sync all
 # config files across the cluster, configure and restart all services.
 
+##############################################################################
+# Configure and setup the primary back-end
+##############################################################################
+
+# Make sure we have installed the push jobs and reporting add-ons
+include_recipe 'aws_ha_chef::push_jobs'
+include_recipe 'aws_ha_chef::reporting'
+
 # Generate all the config files for the entire cluster
 execute 'chef-server-ctl reconfigure'
+
+# Configure for reporting
 execute 'opscode-reporting-ctl reconfigure'
+
+# Fix cluster status files
+file '/var/opt/opscode/keepalived/current_cluster_status' do
+  action :create
+  content 'master'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+file '/var/opt/opscode/keepalived/requested_cluster_status' do
+  action :create
+  content 'master'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+# Start up Chef server on the primary
+# At this point we don't want to restart or reconfigure it again
+execute "chef-server-ctl start"
+
+# Allow the primary some time to establish its supremacy
+ruby_block 'sleep_for_a_bit' do
+  block do
+    sleep 60
+  end
+end
 
 # Create root's .ssh directory
 directory '/root/.ssh' do
@@ -74,13 +112,29 @@ execute "scp -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no -r /etc/opsco
 execute "scp -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no -r /etc/opscode-reporting root@#{backend_ip}:/etc"
 
 # Run chef-server-ctl reconfigure
+# I suspect this is where it's trying the hostile takeover
 execute "ssh -t -t -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no root@#{backend_ip} 'chef-server-ctl reconfigure'"
+
+# Stop the secondary from trying to take over
+execute "ssh -t -t -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no root@#{backend_ip} 'chef-server-ctl stop keepalived; chef-server-ctl stop'"
+
+# Give me my fscking IP address back, in case the backup stole it
+include_recipe 'aws_ha_chef::floating_ip'
+
+# Force this machine to be primary
+include_recipe 'aws_ha_chef::primary'
+
+# Start up Chef server
+execute 'chef-server-ctl start'
 
 # Reconfigure for reporting
 execute "ssh -t -t -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no root@#{backend_ip} 'opscode-reporting-ctl reconfigure'"
 
 # Reconfigure for push-jobs
 execute "ssh -t -t -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no root@#{backend_ip} 'opscode-push-jobs-server-ctl reconfigure'"
+
+# Start up keepalived on the secondary.
+execute "ssh -t -t -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no root@#{backend_ip} 'chef-server-ctl start keepalived'"
 
 # Lock the door on our way out
 execute "ssh -t -t -i /root/.ssh/aws_ha_chef -o StrictHostKeyChecking=no root@#{backend_ip} 'sed -i \'/aws_ha_chef_key/d\' /root/.ssh/authorized_keys'"

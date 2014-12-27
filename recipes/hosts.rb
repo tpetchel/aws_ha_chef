@@ -24,7 +24,6 @@ my_hostname = `grep #{local_ipv4} /etc/hosts | awk '{ print $2 }'`
 # Set our hostname
 execute 'set_hostname' do
   command "hostname #{my_hostname}"
-  action :nothing
 end
 
 # Configure the /etc/sysconfig/network file

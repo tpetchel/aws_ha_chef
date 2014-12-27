@@ -11,6 +11,13 @@
 # cluster recipe.  This recipe sets up all the config files for the cluster.
 
 # Create missing keepalived cluster status files
+directory '/var/opt/opscode/keepalived' do
+  action :create
+  owner 'root'
+  group 'root'
+  mode '0755'
+end
+
 file '/var/opt/opscode/keepalived/current_cluster_status' do
   action :create
   content 'backup'
