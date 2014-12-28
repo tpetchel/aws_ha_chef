@@ -12,6 +12,21 @@ primary - for the primary back end server
 
 Requirements
 ------------
+NOTE: If you want to use the .kitchen.yml file that comes with this cookbook, you must use my fork of the kitchen-ec2 driver, at least until my pull request to add static IP address support is merged. You can check out my fork and the private_ip_address branch here:
+
+https://github.com/scarolan/kitchen-ec2/tree/add_private_ip 
+
+Instructions to build your own kitchen-ec2 gem to work with the ChefDK are below.
+
+```
+chef gem uninstall kitchen-ec2
+git clone https://github.com/scarolan/kitchen-ec2
+cd kitchen-ec2
+git checkout private_ip_address
+gem build kitchen-ec2.gemspec
+chef gem install kitchen-ec2-0.8.1.dev.gem
+```
+
 These are example settings that will work with the default attributes in the cookbook. You can also create your own subnet and security group settings, as long as the necessary ports between the front end and back end servers are open. See this link for the ports that are required by the Chef server:
 
 https://docs.chef.io/server_firewalls_and_ports.html 
