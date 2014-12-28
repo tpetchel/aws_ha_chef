@@ -16,7 +16,7 @@
 ### Fill in these bits:
 START_CMD="nohup /opt/chef/embedded/bin/ruby -run -ehttpd <%= Chef::Config[:file_cache_path] -%> -p31337 > /dev/null 2>&1 &"
 NAME="ruby_webserver"
-PGREP_STRING="/opt/chef/embedded/bin/ruby"
+PGREP_STRING="/opt/chef/embedded/bin/ruby -run -ehttpd <%= Chef::Config[:file_cache_path] -%> -p31337"
 PID_FILE="/var/run/ruby_webserver/program_name.pid"
 USER="root"
 
