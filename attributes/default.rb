@@ -11,7 +11,9 @@ default['aws_ha_chef']['urls']['ha'] = 'https://web-dl.packagecloud.io/chef/stab
 
 # Credentials of your IAM user, for managing storage and floating IP
 # Best to store these in a secure place, and call from ENV variables
-# Or inject them in using test kitchen.
+# Or inject them in using test kitchen. These will be rendered into 
+# the /etc/opscode/chef-server.rb template. Don't use your personal account
+# or the root account for these!
 default['aws_ha_chef']['aws_access_key_id']                 = ''
 default['aws_ha_chef']['aws_secret_access_key']             = ''
 
@@ -25,12 +27,16 @@ default['aws_ha_chef']['api_fqdn']                          = 'aws-chef-ha-demo-
 # EBS storage device
 # If you manually created the EBS volume, put it's vol- id here
 # Otherwise you can use the ebs_volume recipe to auto-generate one.
+# We recommend you just let the recipe do it for you.
 default['aws_ha_chef']['ebs_volume_id']                     = ''
 default['aws_ha_chef']['ebs_device']                        = '/dev/xvdj'
 
 # We are being quite prescriptive about what IP addresses and hostnames here.
 # You'll need to configure your VPC and subnet settings to match what's below
-# if you want to use these defaults.
+# if you want to use these defaults. You can of course create your own subnets
+# and hostnames if you wish. All of these hostnames will be put into the
+# /etc/hosts file on all machines in the cluster, so you don't need to worry 
+# too much about DNS, at least for internal communication in the cluster.
 
 # Backend servers.  Must be in same availability zone, for example: us-west-2b
 default['aws_ha_chef']['backend1']['fqdn']                  = 'backend1.example.local' 

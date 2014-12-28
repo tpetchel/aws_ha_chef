@@ -16,7 +16,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/core_bundle.tar.gz" do
   owner "root"
   group "root"
   mode "0644"
-  retries 5
+  retries 15
   retry_delay 120
 end
 
@@ -27,7 +27,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/reporting_bundle.tar.gz" do
   owner "root"
   group "root"
   mode "0644"
-  retries 5
+  retries 15
   retry_delay 120
 end
 
