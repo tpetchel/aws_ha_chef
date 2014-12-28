@@ -16,8 +16,8 @@ remote_file "#{Chef::Config[:file_cache_path]}/core_bundle.tar.gz" do
   owner "root"
   group "root"
   mode "0644"
-  retries 10
-  retry_delay 60
+  retries 5
+  retry_delay 120
 end
 
 # Sync the reporting files from the primary backend
@@ -27,8 +27,8 @@ remote_file "#{Chef::Config[:file_cache_path]}/reporting_bundle.tar.gz" do
   owner "root"
   group "root"
   mode "0644"
-  retries 10
-  retry_delay 60
+  retries 5
+  retry_delay 120
 end
 
 # Unpack the server files

@@ -78,32 +78,3 @@ Usage is fairly simple and straightforward.  First configure all the attributes 
 
 The NTP recipe is only required if you don't already have a way to configure NTP.
 
-A typical run list for a frontend server might look like this:
-- recipe[aws_ha_chef::disable_iptables]
-- recipe[aws_ha_chef::server]
-- recipe[aws_ha_chef::hosts]
-- recipe[aws_ha_chef::add_ssh_key]
-- recipe[aws_ha_chef::reporting]
-- recipe[aws_ha_chef::push_jobs]
-- recipe[aws_ha_chef::manage]
-
-Secondary back end run list:
-- recipe[aws_ha_chef::disable_iptables]
-- recipe[aws_ha_chef::server]
-- recipe[aws_ha_chef::ha]
-- recipe[aws_ha_chef::hosts]
-- recipe[aws_ha_chef::add_ssh_key]
-- recipe[aws_ha_chef::reporting]
-- recipe[aws_ha_chef::push_jobs]
-
-Primary back end run list:
-- recipe[aws_ha_chef::disable_iptables]
-- recipe[aws_ha_chef::server]
-- recipe[aws_ha_chef::ha]
-- recipe[aws_ha_chef::hosts]
-- recipe[aws_ha_chef::add_ssh_key]
-- recipe[aws_ha_chef::reporting]
-- recipe[aws_ha_chef::push_jobs]
-- recipe[aws_ha_chef::ebs_volume]
-- recipe[aws_ha_chef::primary]
-- recipe[aws_ha_chef::cluster]

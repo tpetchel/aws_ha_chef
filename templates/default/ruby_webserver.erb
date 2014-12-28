@@ -10,8 +10,11 @@
 # Description: Start the program
 ### END INIT INFO
 
+# Source function library.
+. /etc/init.d/functions
+
 ### Fill in these bits:
-START_CMD="/opt/chef/embedded/bin/ruby -run -ehttpd <%= Chef::Config[:file_cache_path] -%> -p31337 2>&1 &"
+START_CMD="nohup /opt/chef/embedded/bin/ruby -run -ehttpd <%= Chef::Config[:file_cache_path] -%> -p31337 > /dev/null 2>&1 &"
 NAME="ruby_webserver"
 PGREP_STRING="/opt/chef/embedded/bin/ruby"
 PID_FILE="/var/run/ruby_webserver/program_name.pid"
@@ -61,7 +64,8 @@ start_script() {
     start_daemon /bin/su $USER -c \"$START_CMD\"
 
   # Sleep for a while to see if anything cries
-  sleep 5
+  #sleep 5
+  sleep 10
   check_proc
 
   if [ $? -eq 0 ]; then

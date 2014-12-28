@@ -44,8 +44,8 @@ execute "chef-server-ctl reconfigure"
 execute "chef-server-ctl start"
 
 # Make sure we have installed the push jobs and reporting add-ons
-include_recipe 'aws_ha_chef::reporting'
-include_recipe 'aws_ha_chef::push_jobs'
+#include_recipe 'aws_ha_chef::reporting'
+#include_recipe 'aws_ha_chef::push_jobs'
 
 # Configure for reporting and push jobs
 execute 'opscode-reporting-ctl reconfigure'
@@ -75,6 +75,10 @@ end
 
 # Install netcat
 package 'nc'
+package 'at'
+service 'atd' do
+  action :start
+end
 
 # Now we have to have a way to serve it to the other machines.  
 # We'l spin up a lightweight Ruby webserver for this purpose.
@@ -86,9 +90,14 @@ template '/etc/init.d/ruby_webserver' do
   source 'ruby_webserver.erb'
 end
 
-service 'ruby_webserver' do
-  action :start
-  start_command '/etc/init.d/ruby_webserver start'
-  stop_command '/etc/init.d/ruby_webserver stop'
-  restart_command '/etc/init.d/ruby_webserver restart'
+# Sadly this does not work. Chef thinks it is up_to_date every time. ;-(
+#service 'ruby_webserver' do
+#  action :start
+#  supports :status => true
+#end
+
+# Hacky workaround, but it gets the files served up
+execute 'start_webserver' do
+  command "echo '/etc/init.d/ruby_webserver start' | at now + 1 minute"
+  not_if 'nc -z localhost 31337'
 end
