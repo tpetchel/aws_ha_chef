@@ -2,7 +2,7 @@ aws_ha_chef Cookbook
 ===========================
 This cookbook will install and configure a high-availability Chef server cluster in AWS EC2 with two back end servers and and multiple front end servers.
 
-This cookbook attempts to automate most of the steps in the installation guide. Official installation documentation is here: https://docs.chef.io/install\_server\_ha\_aws.html
+This cookbook attempts to automate most of the steps in the installation guide. Official installation documentation is here: https://docs.chef.io/install_server_ha_aws.html
 
 The front end servers and secondary back end server need configs that are generated on the primary back end machine. We work around this in the primary recipe by creating a *.tar.gz bundle for each of the core server and reporting configs, and then serving them up on a lightweight web server on port 31337. The 'cluster' recipe will try to pull this file for about 30 minutes before giving up. This means you can bring up the entire cluster in parallel, and the front ends and secondary back end machine will simply wait until the primary back end is ready. You may use Chef Zero or Chef Provisioning to deploy your cluster. A .kitchen.yml file is also supplied for Test Kitchen users.
 
