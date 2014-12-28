@@ -41,7 +41,11 @@ end
 
 # Must be run before attempting to install reporting
 execute "chef-server-ctl reconfigure"
-execute "chef-server-ctl start"
+execute "chef-server-ctl start" do
+  action :run
+  retries 3
+  retry_delay 30
+end
 
 # Make sure we have installed the push jobs and reporting add-ons
 include_recipe 'aws_ha_chef::reporting'
@@ -59,7 +63,11 @@ execute "chef-server-ctl reconfigure"
 # Start up Chef server on the primary
 # At this point we don't want to restart or reconfigure it again
 # Fsck the secondary server, it's jealous of my EBS volume
-execute "chef-server-ctl restart"
+execute "chef-server-ctl restart" do
+  action :run
+  retries 3
+  retry_delay 30
+end
 
 # At this point we should have a working primary backend.  Let's pack up all
 # the configs and make them available to the other machines.
