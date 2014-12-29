@@ -24,7 +24,7 @@ Instructions to build your own kitchen-ec2 gem to work with the ChefDK are below
 chef gem uninstall kitchen-ec2
 git clone https://github.com/scarolan/kitchen-ec2
 cd kitchen-ec2
-git checkout private_ip_address
+git checkout add_private_ip
 gem build kitchen-ec2.gemspec
 chef gem install kitchen-ec2-0.8.1.dev.gem
 ```
