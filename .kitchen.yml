@@ -33,6 +33,7 @@ suites:
       subnet_id: subnet-4d70cd28
       security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
       private_ip_address: 172.25.10.98
+      iam_profile_name: ChefHA
       tags:
         Name: "AWS HA Chef - Backend 1"
         created-by: "test-kitchen"
@@ -45,6 +46,7 @@ suites:
       availability_zone: us-west-2a
       security_group_ids: ['sg-7dabec18', 'sg-59b6f13c']
       private_ip_address: 172.25.10.99
+      iam_profile_name: ChefHA
       tags:
         Name: "AWS HA Chef - Backend 2"
         created-by: "test-kitchen"

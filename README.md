@@ -108,6 +108,7 @@ Sample IAM Account Settings
         "ec2:DescribeVolumeAttribute",
         "ec2:DescribeVolumeStatus",
         "ec2:DescribeVolumes",
+        "ec2:DescribeInstances",
         "ec2:DetachVolume",
         "ec2:EnableVolumeIO",
         "ec2:ImportVolume",
