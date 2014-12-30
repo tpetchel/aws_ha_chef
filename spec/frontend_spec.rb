@@ -9,5 +9,4 @@ describe 'aws_ha_chef::frontend' do
   #before do
   #  stub_command('private-chef-ctl reconfigure').and_return(true)
   #end
-
 end

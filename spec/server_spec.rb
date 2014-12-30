@@ -9,5 +9,4 @@ describe 'aws_ha_chef::server' do
   #before do
   #  stub_command('getent group appids').and_return(false)
   #end
-
 end
