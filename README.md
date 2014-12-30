@@ -94,6 +94,7 @@ Usage is fairly simple and straightforward. First configure all the attributes l
 
 Sample IAM Account Settings
 -----
+These settings are tested and verified working via an IAM user created explicitly for deploying the HA Chef server configuration. You can also apply these settings to a role policy, and then allow users to assume the role if you wish.  This prevents you from having to secure keys, as the keys are generated dynamically when necessary.
 
 ```
 {
