@@ -14,6 +14,11 @@ include_recipe 'aws_ha_chef::ha'
 include_recipe 'aws_ha_chef::push_jobs'
 include_recipe 'aws_ha_chef::reporting'
 
+# Make sure we have LVM installed in case of failover
+package "lvm2" do
+  action :install
+end
+
 # Create missing keepalived cluster status files
 directory '/var/opt/opscode/keepalived' do
   action :create
