@@ -9,7 +9,9 @@ The front end servers and secondary back end server need configs that are genera
 The push_jobs, reporting, and manage UI plugins are all installed automatically. You should only need to call these three recipes directly:
 
 frontend - for your front end servers
+
 secondary - for the secondary back end server
+
 primary - for the primary back end server
 
 Requirements
