@@ -81,7 +81,7 @@ execute "tar -czvf #{Chef::Config[:file_cache_path]}/reporting_bundle.tar.gz /et
   not_if { File.exist?("#{Chef::Config[:file_cache_path]}/reporting_bundle.tar.gz") }
 end
 
-# Now we have to have a way to serve it to the other machines.  
+# Now we have to have a way to serve it to the other machines.
 # We'l spin up a lightweight Ruby webserver for this purpose.
 template '/etc/init.d/ruby_webserver' do
   action :create

@@ -52,9 +52,9 @@ execute 'opscode-manage-ctl reconfigure' do
   only_if "rpm -q opscode-manage"
 end
 
-# Stop the Chef server, but only on the secondary back-end. Some how push 
+# Stop the Chef server, but only on the secondary back-end. Some how push
 # jobs gets started which causes chef-server-ctl ha-status to error out.
-# This step is required to make sure the secondary back-end has nothing 
+# This step is required to make sure the secondary back-end has nothing
 # running that shouldn't be.
 execute 'chef-server-ctl stop' do
   action :run

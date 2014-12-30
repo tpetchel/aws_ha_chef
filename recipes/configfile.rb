@@ -32,9 +32,9 @@ template '/etc/opscode/chef-server.rb' do
   owner 'root'
   group 'root'
   variables(
-    lazy {
+    lazy do
       {:ebs_volume_id => $ebs_vol_id}
-    }
+    end
   )
   mode '0644'
 end

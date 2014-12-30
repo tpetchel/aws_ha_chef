@@ -28,7 +28,8 @@ require 'fog'
 # Fetch our MAC address
 mac = File.read('/sys/class/net/eth0/address').strip
 # Use the MAC to get our AWS interface ID
-eth0_interface_id = `curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/#{mac}/interface-id`
+#eth0_interface_id = `curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/#{mac}/interface-id`
+eth0_interface_id = Mixlib::ShellOut.new("curl http://169.254.169.254/latest/meta-data/network/interfaces/macs/#{mac}/interface-id").run_command.stdout
 
 log "print_network_info" do
   message "My MAC address is #{mac}\nMy interface id is #{eth0_interface_id}"
@@ -45,4 +46,4 @@ connection = Fog::Compute.new(
 )
 
 # Here's where we attach the IP address
-connection.assign_private_ip_addresses(eth0_interface_id, { 'PrivateIpAddresses' => node['aws_ha_chef']['backend_vip']['ip_address'], 'AllowReassignment' => true })
+connection.assign_private_ip_addresses(eth0_interface_id, 'PrivateIpAddresses' => node['aws_ha_chef']['backend_vip']['ip_address'], 'AllowReassignment' => true )

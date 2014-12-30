@@ -7,7 +7,7 @@
 # the LVM cookbook:  https://www.chef.io/blog/page/2/
 # Use the Chef 11.16.4 client instead to bootstrap your chef servers.
 
-# We have to run most of these during the compile phase, to make sure the 
+# We have to run most of these during the compile phase, to make sure the
 # EBS volume is created and properly mounted before the execute phase.
 
 include_recipe 'lvm::default'
@@ -22,7 +22,7 @@ chef_gem 'di-ruby-lvm' do
 end.run_action(:install)
 
 gems = { "di-ruby-lvm-attrib" => "0.0.16", "open4" => "1.3.4", "di-ruby-lvm" => "0.1.3" }
-gems.each do |gem, version|
+gems.each do |gem, _version|
   gem_package gem do
     gem_binary('/opt/chef/embedded/bin/gem')
     action :install
