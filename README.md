@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/scarolan/aws_ha_chef.svg?branch=master)](https://travis-ci.org/scarolan/aws_ha_chef)
+
 aws_ha_chef Cookbook
 ===========================
 This cookbook will install and configure a high-availability Chef server cluster in AWS EC2 with two back end servers and and multiple front end servers.
