@@ -14,7 +14,7 @@ primary - for the primary back end server
 
 Requirements
 ------------
-NOTE: If you want to use the .kitchen.yml file that comes with this cookbook, you must use my fork of the kitchen-ec2 driver, at least until my pull request to add static IP address support is merged. You can check out my fork and the private_ip_address branch here:
+NOTE: If you want to use the .kitchen.yml file that comes with this cookbook, you must use my fork of the kitchen-ec2 driver, at least until my pull request to add static IP address support is merged. You can check out my fork and the add_private_ip branch here:
 
 https://github.com/scarolan/kitchen-ec2/tree/add_private_ip 
 
