@@ -3,19 +3,19 @@
 # Recipe:: metal_create
 #
 
-# Creates an HA Chef 12 cluster in AWS.  
-# This recipe requires customized versions of chef-provisioning and 
+# Creates an HA Chef 12 cluster in AWS.
+# This recipe requires customized versions of chef-provisioning and
 # chef-provisioning-aws to work properly. Specifically the issues are:
 #
-# 1. We have to be able to specify the version of the chef client on the 
+# 1. We have to be able to specify the version of the chef client on the
 #    target machines in order for the LVM cookbook to work.
-# 2. We had to hard-code the username that chef-provisioning-aws uses to 
-#    'root' instead of 'ubuntu'. For some reason specifying :ssh_username 
+# 2. We had to hard-code the username that chef-provisioning-aws uses to
+#    'root' instead of 'ubuntu'. For some reason specifying :ssh_username
 #    was not working.
 
 require 'chef/provisioning/aws_driver'
 
-# The developers have abandoned the fog driver, but not yet updated all the 
+# The developers have abandoned the fog driver, but not yet updated all the
 # documentation. Don't fall in the tar pit like I did!
 #with_driver 'fog:AWS'
 with_driver 'aws'
@@ -41,7 +41,7 @@ machine_batch do
     })
     attributes(
       aws_ha_chef: {
-        # You'll need to create an IAM user and store its creds in your 
+        # You'll need to create an IAM user and store its creds in your
         # environment variables.  Don't use your personal keys here!
         aws_access_key_id: ENV['CHEF_HA_ACCESS_KEY_ID'],
         aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY']
@@ -49,7 +49,7 @@ machine_batch do
     )
     #action :destroy
   end
-  
+
   # Provision secondary backend
   #machine node['aws_ha_chef']['backend2']['fqdn'] do
   machine 'backend2.example.local' do
@@ -68,7 +68,7 @@ machine_batch do
     })
     attributes(
       aws_ha_chef: {
-        # You'll need to create an IAM user and store its creds in your 
+        # You'll need to create an IAM user and store its creds in your
         # environment variables.  Don't use your personal keys here!
         aws_access_key_id: ENV['CHEF_HA_ACCESS_KEY_ID'],
         aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY']
@@ -76,7 +76,7 @@ machine_batch do
     )
     #action :destroy
   end
-  
+
   # Provision frontends
   frontends = {
     'fe1' => { 'fqdn' => 'frontend1.example.local', 'ip_address' => '172.25.10.100' },
@@ -101,7 +101,7 @@ machine_batch do
       })
       attributes(
         aws_ha_chef: {
-          # You'll need to create an IAM user and store its creds in your 
+          # You'll need to create an IAM user and store its creds in your
           # environment variables.  Don't use your personal keys here!
           aws_access_key_id: ENV['CHEF_HA_ACCESS_KEY_ID'],
           aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY']

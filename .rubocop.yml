@@ -22,3 +22,9 @@ AsciiComments:
   Enabled: false
 SingleSpaceBeforeFirstArg:
   Enabled: false
+BracesAroundHashParameters:
+  Enabled: false
+AlignHash:
+  Enabled: False
+IndentHash:
+  Enabled: False
