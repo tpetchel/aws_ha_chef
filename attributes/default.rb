@@ -22,7 +22,8 @@ default['aws_ha_chef']['region']                            = 'us-west-2'
 
 # FQDN of your Amazon Elastic Load Balancer
 # Hand-crafted artisinal load balancer
-default['aws_ha_chef']['api_fqdn']                          = 'aws-chef-ha-demo-1680455053.us-west-2.elb.amazonaws.com'
+# Make sure you change this to match *your* load balancer:
+default['aws_ha_chef']['api_fqdn']                          = 'chef-aws-ha-demo-256394054.us-west-2.elb.amazonaws.com'
 
 # EBS storage device
 # If you manually created the EBS volume, put it's vol- id here
