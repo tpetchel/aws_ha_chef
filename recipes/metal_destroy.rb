@@ -43,10 +43,32 @@ machine 'backend1.example.local' do
       # You'll need to create an IAM user and store its creds in your
       # environment variables.  Don't use your personal keys here!
       aws_access_key_id: ENV['CHEF_HA_ACCESS_KEY_ID'],
-      aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY']
+      aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY'],
+      backend1: {
+        fqdn: 'backend1.example.local',
+        ip_address: '172.25.10.98'
+      },
+      backend2: {
+        fqdn: 'backend2.example.local',
+        ip_address: '172.25.10.99'
+      },
+      frontends: {
+        fe1: {
+          fqdn: 'frontend1.example.local',
+          ip_address: '172.25.10.100'
+        },
+        fe2: {
+          fqdn: 'frontend2.example.local',
+          ip_address: '172.25.10.101'
+        },
+        fe3: {
+          fqdn: 'frontend3.example.local',
+          ip_address: '172.25.10.102'
+        }
+      }
     }
   )
-  action :destroy
+  #action :destroy
 end
 
 # Provision secondary backend
@@ -70,10 +92,32 @@ machine 'backend2.example.local' do
       # You'll need to create an IAM user and store its creds in your
       # environment variables.  Don't use your personal keys here!
       aws_access_key_id: ENV['CHEF_HA_ACCESS_KEY_ID'],
-      aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY']
+      aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY'],
+      backend1: {
+        fqdn: 'backend1.example.local',
+        ip_address: '172.25.10.98'
+      },
+      backend2: {
+        fqdn: 'backend2.example.local',
+        ip_address: '172.25.10.99'
+      },
+      frontends: {
+        fe1: {
+          fqdn: 'frontend1.example.local',
+          ip_address: '172.25.10.100'
+        },
+        fe2: {
+          fqdn: 'frontend2.example.local',
+          ip_address: '172.25.10.101'
+        },
+        fe3: {
+          fqdn: 'frontend3.example.local',
+          ip_address: '172.25.10.102'
+        }
+      }
     }
   )
-  action :destroy
+  #action :destroy
 end
 
 # Provision frontends
@@ -103,9 +147,31 @@ frontends.each do |_host, host_data|
         # You'll need to create an IAM user and store its creds in your
         # environment variables.  Don't use your personal keys here!
         aws_access_key_id: ENV['CHEF_HA_ACCESS_KEY_ID'],
-        aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY']
+        aws_secret_access_key: ENV['CHEF_HA_SECRET_ACCESS_KEY'],
+        backend1: {
+          fqdn: 'backend1.example.local',
+          ip_address: '172.25.10.98'
+        },
+        backend2: {
+          fqdn: 'backend2.example.local',
+          ip_address: '172.25.10.99'
+        },
+        frontends: {
+          fe1: {
+            fqdn: 'frontend1.example.local',
+            ip_address: '172.25.10.100'
+          },
+          fe2: {
+            fqdn: 'frontend2.example.local',
+            ip_address: '172.25.10.101'
+          },
+          fe3: {
+            fqdn: 'frontend3.example.local',
+            ip_address: '172.25.10.102'
+          }
+        }
       }
     )
-    action :destroy
+    #action :destroy
   end
 end
