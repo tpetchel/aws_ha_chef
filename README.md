@@ -94,7 +94,7 @@ default['aws_ha_chef']['frontends']['fe3']['ip_address']  IP address of front en
 Usage
 -----
 
-Usage is fairly simple and straightforward. First configure all the attributes listed above via a role, *.json file, or .kitchen.yml file. The NTP recipe is only required if you don't already have a way to configure NTP.
+Usage is fairly simple and straightforward. First configure all the attributes listed above via a role, *.json file, or .kitchen.yml file. The NTP recipe is only required if you don't already have a way to configure NTP.  The hosts recipe sets up your /etc/hosts and /etc/sysconfig/network files so you can use familiar hostnames instead of the ones assigned by Amazon EC2.  See the default attributes file for examples.
 
 Sample IAM Account Settings
 -----
