@@ -3,13 +3,13 @@ aws_ha_chef  CHANGELOG
 
 This file is used to list changes made in each version of the tiered-chef-server cookbook.
 
-0.1.0
------
-- [your_name] - Initial release of tiered-chef-server.  Very beta.  Much bugs.
-
 1.0.0
 -----
 - [your_name] - Out with the old n' busted, in with the new hotness.
+
+0.1.0
+-----
+- [your_name] - Initial release of tiered-chef-server.  Very beta.  Much bugs.
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
